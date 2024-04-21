@@ -1,7 +1,7 @@
 from django import forms
-from .models import Shortify
+from .models import AnonymousShortify
 
-class ShortForm(forms.ModelForm):
+class AnonymousShortForm(forms.ModelForm):
     class Meta:
-        model = Shortify
+        model = AnonymousShortify
         fields = ('url',)

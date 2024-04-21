@@ -5,14 +5,40 @@
 {% load static %}
 
 {% block content %}
-<form method="POST" >
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type-"submit">Submit</button>
-</form>
-<div>
-    {% if short_url %}
-        {{ short_url }}    
-    {% endif %}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">URL Shortener</h5>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+            {% if short_url %}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Shortened URL</h5>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="shortenedUrl" value="{{ short_url }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">Copy</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
+
+<script>
+    function copyToClipboard() {
+        var inputElement = document.getElementById("shortenedUrl");
+        inputElement.select();
+        document.execCommand("copy");
+        alert("Copied the shortened URL: " + inputElement.value);
+    }
+</script>
 {% endblock content %}
