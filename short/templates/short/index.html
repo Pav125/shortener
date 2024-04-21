@@ -1,0 +1,18 @@
+{% extends "short/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+<form method="POST" >
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type-"submit">Submit</button>
+</form>
+<div>
+    {% if short_url %}
+        {{ short_url }}    
+    {% endif %}
+</div>
+{% endblock content %}
