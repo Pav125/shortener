@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import AnonymousShortForm
-from .models import AnonymousShortify
-from django.http import Http404
+from .forms import AnonymousShortForm, ContactForm
+from .models import AnonymousShorti
+from django.core.mail import send_mail
+from django.contrib import messages
 
 import hashlib
 import string
@@ -17,40 +18,70 @@ def generate_short_url(original_url):
 
 # Create your views here.
 def index(request):
+
+    urls = AnonymousShorti.objects.all()
+
     short_url = None
+    form = AnonymousShortForm()
+    
     if request.method == 'POST':
         form = AnonymousShortForm(request.POST)
-
         if form.is_valid():
             original_url = form.cleaned_data['url']
-            existing_url = AnonymousShortify.objects.filter(url=original_url).first()
+            existing_url = AnonymousShorti.objects.filter(url=original_url).first()
             if existing_url:
                 short_url = existing_url.short_url
             else:
                 shorturl = generate_short_url(original_url)
                 short_url = request.build_absolute_uri('/')+shorturl
-                # while AnonymousShortify.objects.filter(url=original_url).first()
-                while AnonymousShortify.objects.filter(short_url=short_url).exists():
+                while AnonymousShorti.objects.filter(short_url=short_url).exists():
                     shorturl = generate_short_url(original_url)
                     short_url = request.build_absolute_uri('/')+shorturl
-                url = AnonymousShortify.objects.create(url = original_url, short_url = short_url)
-                url.save()
-    else:
-        form = AnonymousShortForm()
+                url = AnonymousShorti.objects.create(url=original_url, short_url=short_url)
+                url.save()  
+
+    # Determine which template to render based on user authentication
+    template = 'short/index.html'
+
     context = {
-        'form' : form,
-        'short_url' : short_url if short_url else None
+        'form': form,
+        'short_url': short_url,
+        'urls' : urls
     }
+    
+    return render(request, template, context)
 
 
-    return render(request, 'short/index.html', context)
 
 def redirect_short_url(request, slug):
     base_url = request.scheme + '://' + request.get_host()
     absolute_url = base_url + '/' + slug
-    short_url = get_object_or_404(AnonymousShortify, short_url = absolute_url)
+    short_url = get_object_or_404(AnonymousShorti, short_url = absolute_url)
     return redirect(short_url.url)
 
 
 # def custom_404_view(request, exception):
 #     return render(request, 'short/404.html', status=404)
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.changed_data['name']
+            email = form.changed_data['email']
+            text = form.changed_data['message']
+            subject = 'Contact Form'
+            message = f'Name: {name}\nEmail: {email}\n\n Message: {text}'
+
+            send_mail(
+                subject,
+                message,
+                'devipavan825@gmail.com',
+                ['devipavan824@gmail.com'],
+                fail_silently=False,
+            )
+            messages.success(request, 'Your message was sent successfully.')
+        else:
+            form = ContactForm()
+
+    return render(request, 'short/contact.html')

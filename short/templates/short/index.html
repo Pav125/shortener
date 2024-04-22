@@ -8,7 +8,7 @@
     <div class="row justify-content-center mt-3">
         <div class="col-md-6">
             <h2 class="text-center">Welcome to URL Shortener</h2>
-            <p class="text-center">Want to save your links and access them in a secure way? <a href="#">Login now</a></p>
+            {% comment %} <p class="text-center">Want to save your links and access them in a secure way? <a href="#">Login now</a></p> {% endcomment %}
         </div>
     </div>
 
@@ -43,6 +43,14 @@
             {% endif %}
         </div>
     </div>
+
+    <div>
+
+    {% for link in urls %}
+    {{ link.created_at }}|<a href="{{ link.short_url }}">{{ link.short_url }}</a>|<a href="{{ link.url }}">{{ link.url }}</a>
+    {% endfor %}
+
+    <div>
 </div>
 
 <script>

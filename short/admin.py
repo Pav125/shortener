@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AnonymousShortify
+from .models import AnonymousShorti
 
 # Register your models here.
-admin.site.register(AnonymousShortify)
+admin.site.register(AnonymousShorti)
