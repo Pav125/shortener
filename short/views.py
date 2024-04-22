@@ -19,7 +19,7 @@ def generate_short_url(original_url):
 # Create your views here.
 def index(request):
 
-    urls = AnonymousShorti.objects.all()
+    urls = AnonymousShorti.objects.order_by('-created_at')[:7]
 
     short_url = None
     form = AnonymousShortForm()
@@ -67,9 +67,9 @@ def contact_view(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            name = form.changed_data['name']
-            email = form.changed_data['email']
-            text = form.changed_data['message']
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            text = form.cleaned_data['message']
             subject = 'Contact Form'
             message = f'Name: {name}\nEmail: {email}\n\n Message: {text}'
 
@@ -81,6 +81,7 @@ def contact_view(request):
                 fail_silently=False,
             )
             messages.success(request, 'Your message was sent successfully.')
+            return redirect('index')
         else:
             form = ContactForm()
 

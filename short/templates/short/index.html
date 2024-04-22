@@ -1,30 +1,31 @@
 {% extends "short/base.html" %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load humanize %} <!-- Import the humanize filter -->
+
+{% block title %}
+<title>Home</title>
+{% endblock title %}
 
 {% block content %}
 <div class="container">
     <!-- Welcome message with login suggestion -->
-    <div class="row justify-content-center mt-3">
+    <div class="row justify-content-center mt-5">
         <div class="col-md-6">
             <h2 class="text-center">Welcome to URL Shortener</h2>
-            {% comment %} <p class="text-center">Want to save your links and access them in a secure way? <a href="#">Login now</a></p> {% endcomment %}
+            <p class="text-center">Are you tired of long URLs? Shorten them with us.</p>
         </div>
     </div>
 
     <!-- URL shortener form -->
-    <div class="row justify-content-center mt-3">
-        <div class="col-md-6">
+    <div class="row justify-content-center mt-2 mb-5">
+        <div class="col-md-8"> <!-- Increase to 8 columns for medium devices -->
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">URL Shortener</h5>
+                    {% comment %} <h5 class="card-title">URL Shortener</h5> {% endcomment %}
                     <form method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
-                        {% comment %} <div class="form-group mt-3">
-                            <label for="captcha">What is 2 + 2? (Please solve the math problem)</label>
-                            <input type="number" class="form-control" id="captcha" name="captcha" required>
-                        </div> {% endcomment %}
                         <button type="submit" class="btn btn-primary mt-3">Submit</button>
                     </form>
                 </div>
@@ -44,13 +45,32 @@
         </div>
     </div>
 
-    <div>
-
-    {% for link in urls %}
-    {{ link.created_at }}|<a href="{{ link.short_url }}">{{ link.short_url }}</a>|<a href="{{ link.url }}">{{ link.url }}</a>
-    {% endfor %}
-
-    <div>
+    <!-- Horizontal scrolling section for URLs -->
+    <p>some recent entries:</p>
+    <div class="container mt-3 mb-3">
+        <div class="row">
+            <div class="col-md-12" style="overflow-x: auto;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Age</th> <!-- Changed the header -->
+                            <th scope="col">Short URL</th>
+                            <th scope="col">Original URL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for link in urls %}
+                        <tr>
+                            <td>{{ link.created_at|timesince }}</td> <!-- Use the timesince filter -->
+                            <td><a href="{{ link.short_url }}">{{ link.short_url }}</a></td>
+                            <td><a href="{{ link.url }}">{{ link.url }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -58,7 +78,6 @@
         var inputElement = document.getElementById("shortenedUrl");
         inputElement.select();
         document.execCommand("copy");
-        {% comment %} alert("Copied the shortened URL: " + inputElement.value); {% endcomment %}
     }
 </script>
 {% endblock content %}
