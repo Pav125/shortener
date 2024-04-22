@@ -28,9 +28,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['web-production-33fc.up.railway.app']
+ALLOWED_HOSTS = ['https://web-production-33fc.up.railway.app', '127.0.0.1']
 
-
+CSRF_TRUSTED_ORIGINS = ['https://web-production-33fc.up.railway.app']
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'short.apps.ShortConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
