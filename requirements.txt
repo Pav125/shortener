@@ -1,6 +1,6 @@
 asgiref==3.8.1
 crispy-bootstrap5==2024.2
-Django==5.0.4
+Django==4.2.11
 django-crispy-forms==2.1
 gunicorn==22.0.0
 humanize==4.9.0
