@@ -19,10 +19,10 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-# handler404 = 'short.views.custom_404_view'
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('short.urls')),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+handler404 = 'short.views.page_not_found'

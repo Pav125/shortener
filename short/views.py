@@ -60,8 +60,8 @@ def redirect_short_url(request, slug):
     return redirect(short_url.url)
 
 
-# def custom_404_view(request, exception):
-#     return render(request, 'short/404.html', status=404)
+def page_not_found(request, exception):
+    return render(request, 'short/404.html', status=404)
 
 def contact_view(request):
     if request.method == 'POST':
