@@ -8,7 +8,7 @@ body {
 
 /* Change navbar background color */
 .navbar {
-    background-color: #F9F4F5; /* Change to your desired color */
+    background-color: #d3526c; /* Change to your desired color */
 }
 
 .navbar-brand{
@@ -52,7 +52,7 @@ body {
 
 /* Card styles */
 .card {
-    background-color: #F9F4F5;
+    background-color: #a988d6;
     margin-top: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
