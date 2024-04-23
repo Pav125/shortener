@@ -18,9 +18,9 @@
     </div>
 
     <!-- URL shortener form -->
-    <div class="row justify-content-center mt-2 mb-5">
+    <daiv class="row justify-content-center mt-2 mb-5">
         <div class="col-md-8"> <!-- Increase to 8 columns for medium devices -->
-            <div class="card">
+            <div class="card" style="background-color: #edf2f4;">
                 <div class="card-body">
                     {% comment %} <h5 class="card-title">URL Shortener</h5> {% endcomment %}
                     <form method="post">
@@ -37,7 +37,7 @@
                     <h5 class="card-title">Shortened URL</h5>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="shortenedUrl" value="{{ short_url }}" readonly>
-                        <button class="btn btn-outline-secondary" type="button" onclick="copyToClipboard()">Copy</button>
+                        <button class="btn btn-outline-secondary text-white" type="button" onclick="copyToClipboard()">Copy</button>
                     </div>
                 </div>
             </div>
